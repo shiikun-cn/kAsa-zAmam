@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实时特殊字体计时器</title>
+    <!-- 引入特殊字体（以Google Fonts为例） -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #000;
+        }
+        #timer {
+            font-family: 'Orbitron', sans-serif; /* 特殊字体 */
+            font-size: 4em;
+            color: #00ff00; /* 霓虹绿效果 */
+            text-shadow: 0 0 10px #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer"></div>
+
+    <script>
+        function updateTime() {
+            const timerElement = document.getElementById('timer');
+            const now = new Date();
+            // 格式化时间（可根据需要调整格式）
+            const timeString = now.toLocaleTimeString('zh-CN', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            timerElement.textContent = timeString;
+        }
+
+        // 每秒更新一次时间
+        setInterval(updateTime, 1000);
+        updateTime(); // 初始化
+    </script>
+</body>
+</html>
