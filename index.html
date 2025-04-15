@@ -2,10 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>实时特殊字体计时器</title>
-    <!-- 引入特殊字体（以Google Fonts为例） -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <title>Käsa Zämamu</title>
     <style>
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('fonts/Kiineza_Laaitu.woff2') format('woff2');
+        }
         body {
             display: flex;
             justify-content: center;
@@ -15,10 +17,18 @@
             background: #000;
         }
         #timer {
-            font-family: 'Orbitron', sans-serif; /* 特殊字体 */
-            font-size: 4em;
-            color: #00ff00; /* 霓虹绿效果 */
+            font-family: 'MyCustomFont', sans-serif;
+            font-size: 6em;
+            color: #00ff00;
             text-shadow: 0 0 10px #00ff00;
+            text-align: center; 
+        }
+        .small-text {
+            font-size: 0.6em !important;
+            vertical-align: middle;
+        }
+        .date-section, .time-section {
+            line-height: 0.8; 
         }
     </style>
 </head>
@@ -26,22 +36,40 @@
     <div id="timer"></div>
 
     <script>
+        function toBase12(number) {
+            let base12 = parseInt(number).toString(12);
+            base12 = base12
+                .replace(/a/gi, '-')
+                .replace(/b/gi, '=');
+            return base12;
+        }
+
+        function formatCustomTime(date) {
+            const yearBase12 = toBase12(date.getFullYear());
+            const monthBase12 = toBase12(date.getMonth() + 1);
+            const dayBase12 = toBase12(date.getDate());
+            const hoursBase12 = toBase12(date.getHours()).padStart(2, '0');
+            const minutesBase12 = toBase12(date.getMinutes()).padStart(2, '0');
+            const secondsBase12 = toBase12(date.getSeconds()).padStart(2, '0');
+
+            return `
+                <div class="date-section">
+                    ${yearBase12}<span class="small-text"> makAs </span>${monthBase12}<span class="small-text"> mahUl </span>${dayBase12}<span class="small-text"> mamOz</span>
+                </div>
+                <div class="time-section">
+                    ${hoursBase12}<span class="small-text"> ' </span>${minutesBase12}<span class="small-text"> ' </span>${secondsBase12}
+                </div>
+            `;
+        }
+
         function updateTime() {
             const timerElement = document.getElementById('timer');
             const now = new Date();
-            // 格式化时间（可根据需要调整格式）
-            const timeString = now.toLocaleTimeString('zh-CN', { 
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            timerElement.textContent = timeString;
+            timerElement.innerHTML = formatCustomTime(now);
         }
 
-        // 每秒更新一次时间
         setInterval(updateTime, 1000);
-        updateTime(); // 初始化
+        updateTime();
     </script>
 </body>
 </html>
