@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Käsa Zämamu</title>
+    <style>
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('fonts/Kiineza_Laaitu.woff2') format('woff2');
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #000;
+        }
+        #timer {
+            font-family: 'MyCustomFont', sans-serif;
+            font-size: 6em;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            text-align: center; /* 确保内容居中 */
+        }
+        .small-text {
+            font-size: 0.6em !important;
+            vertical-align: middle;
+        }
+        .date-section, .time-section {
+            line-height: 0.8;      /* 调整行间距 */
+        }
+    </style>
+</head>
+<body>
+    <div id="timer"></div>
 
+    <script>
+        function toBase12(number) {
+            let base12 = parseInt(number).toString(12);
+            base12 = base12
+                .replace(/a/gi, '-')
+                .replace(/b/gi, '=');
+            return base12;
+        }
+
+        function formatCustomTime(date) {
+            const yearBase12 = toBase12(date.getFullYear());
+            const monthBase12 = toBase12(date.getMonth() + 1);
+            const dayBase12 = toBase12(date.getDate());
+            const hoursBase12 = toBase12(date.getHours()).padStart(2, '0');
+            const minutesBase12 = toBase12(date.getMinutes()).padStart(2, '0');
+            const secondsBase12 = toBase12(date.getSeconds()).padStart(2, '0');
+
+            return `
+                <div class="date-section">
+                    ${yearBase12}<span class="small-text"> makAs </span>${monthBase12}<span class="small-text"> mahUl </span>${dayBase12}<span class="small-text"> mamOz</span>
+                </div>
+                <div class="time-section">
+                    ${hoursBase12}<span class="small-text"> ' </span>${minutesBase12}<span class="small-text"> ' </span>${secondsBase12}
+                </div>
+            `;
+        }
+
+        function updateTime() {
+            const timerElement = document.getElementById('timer');
+            const now = new Date();
+            timerElement.innerHTML = formatCustomTime(now);
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
